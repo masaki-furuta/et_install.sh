@@ -19,7 +19,7 @@ yum -y upgrade
 yum -y install wget make kernel-devel
 wget -c https://dl.fedoraproject.org/pub/epel/8/Everything/SRPMS/Packages/e/et-6.0.7-1.el8.src.rpm
 rpmbuild --rebuild ./et-6.0.7-1.el8.src.rpm || \
-    ( rpmbuild --rebuild ./et-6.0.7-1.el8.src.rpm 2>&1 | grep needed | sed -e 's/is.*//g' | perl -pe "s/\n/ /g" ; rpmbuild --rebuild ./et-6.0.7-1.el8.src.rpm )
+    ( rpmbuild --rebuild ./et-6.0.7-1.el8.src.rpm 2>&1 | grep needed | sed -e 's/is.*//g' | perl -pe "s/\n/ /g" | xargs yum -y install; rpmbuild --rebuild ./et-6.0.7-1.el8.src.rpm )
 rpm -ivh /root/rpmbuild/RPMS/x86_64/et-*.el7.x86_64.rpm
 systemctl enable --now et
 
