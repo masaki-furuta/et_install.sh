@@ -4,7 +4,7 @@ Script to install et (EternalTerminal) on RHEL7/8 , Fedora , Debian on crostini.
 
 ## Environment
 
-- Tested CentOS7 as well ( Need enabling SCL for CentOS, uncommenting single line in `et_install_rhel7.sh` ).
+- Tested CentOS7 as well ( Need installing SCL for CentOS, uncommenting single line; `#yum -y install centos-release-scl` in `et_install_rhel7.sh` ).
 
 ## Usage
 
