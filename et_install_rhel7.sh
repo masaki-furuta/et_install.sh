@@ -15,16 +15,15 @@ grep -q CentOS /etc/redhat-release && \
 yum -y install centos-release-scl
 yum-config-manager --enable rhel-server-rhscl-7-rpms
 yum -y install devtoolset-7
-#scl enable devtoolset-7 bash
-source /opt/rh/devtoolset-7/enable
 yum -y upgrade
 
-wget -c https://dl.fedoraproject.org/pub/epel/8/Everything/SRPMS/Packages/e/et-6.0.7-1.el8.src.rpm
-rpmbuild --rebuild ./et-6.0.7-1.el8.src.rpm || \
-    ( rpmbuild --rebuild ./et-6.0.7-1.el8.src.rpm 2>&1 | sed -e '/needed/!d' -e 's/is.*//g' | perl -pe "s/\n/ /g" | xargs yum -y install; rpmbuild --rebuild ./et-6.0.7-1.el8.src.rpm )
-rpm -ivh /root/rpmbuild/RPMS/x86_64/et-*.el7.x86_64.rpm
+SRPM=https://copr-be.cloud.fedoraproject.org/results/masakifuruta/et/srpm-builds/01618165/et-6.0.11-2.fc32.src.rpm
+wget -c ${SRPM}
+rm -fv /root/rpmbuild/RPMS/x86_64/et-*.el7.x86_64.rpm
+rpmbuild --rebuild ./${SRPM##*/} || \
+    ( rpmbuild --rebuild ./${SRPM##*/} 2>&1 | sed -e '/needed/!d' -e 's/is.*//g' | perl -pe "s/\n/ /g" | xargs yum -y install; rpmbuild --rebuild ./${SRPM##*/} )
+rpm -Uvh /root/rpmbuild/RPMS/x86_64/et-*.el7.x86_64.rpm
 systemctl enable --now et
-#firewall-cmd --add-port=2022/tcp --zone=public --permanent
 systemctl disable --now firewalld
 
  
